@@ -95,7 +95,7 @@ class RunDatabase
     puts "What name are you searching for? "
     name = gets.chomp
 
-    search_result = @people.select {|person| person.name == name}
+    search_result = @people.find_all {|person| person.name == name}
     search_result.each do |person|
       puts person.name
       puts person.address
@@ -114,8 +114,8 @@ class RunDatabase
     puts "What name would you like to delete? "
     name = gets.chomp
 
-    search_result = @people.select {|person| person.name == name}
-    @people.delete
+    search_result = @people.delete_if {|person| person.name == name}
+    "#{name} has been DELETED."
   end
 
   # Running the app
