@@ -45,7 +45,7 @@ class RunDatabase
   # print report of inventory
   def print_invetory
     @people.each do |person|
-      banner_three "#{person.name}, #{person.phone_number}, #{person.address}, #{person.address}, #{person.position}, #{person.salary}, #{person.slack_account}, #{person.github_account}"
+      banner_three "#{person.name} | #{person.phone_number} | #{person.address} | #{person.address} | #{person.position} | #{person.salary} | #{person.slack_account} | #{person.github_account} "
     end
   end
 
@@ -92,10 +92,15 @@ class RunDatabase
 
   # Search behavior
   def search
-    puts "What name are you searching for? "
-    name = gets.chomp
+    puts "What name, github, or slack are you searching for? "
+    search_text = gets.chomp
 
-    search_result = @people.find_all {|person| person.name == name}
+    search_result = @people.find_all { |person| person.name.include?(search_text) || person.slack_account.include?(search_text) || person.github_account.include?(search_text) }
+
+    if search_result.empty?
+      banner "#{name} NOT FOUND!"
+    end
+
     search_result.each do |person|
       puts person.name
       puts person.address
@@ -105,17 +110,14 @@ class RunDatabase
       puts person.salary
       puts person.slack_account
     end
-    search_result = @people.select {|person| person.name != name}
-    puts "NOT FOUND"
   end
 
   # Deleting behavior
   def delete
     puts "What name would you like to delete? "
     name = gets.chomp
-
-    search_result = @people.delete_if {|person| person.name == name}
-    "#{name} has been DELETED."
+    search_result = @people.delete_if {|person| person.name.eql?(name)}
+    banner "#{name} has been DELETED."
   end
 
   # Running the app
