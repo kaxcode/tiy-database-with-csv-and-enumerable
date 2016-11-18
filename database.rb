@@ -45,7 +45,7 @@ class RunDatabase
   # print report of inventory
   def print_invetory
     @people.each do |person|
-      puts "#{person.name} lives in #{person.address}. In case you wish to contact him call #{person.phone_number}. #{person.name} is a #{person.position} at TIY. #{person.name} makes a montlly salary of #{person.salary}. Their slack account is #{person.slack_account} and their github account is #{person.github_account}."
+      banner_three "#{person.name}, #{person.phone_number}, #{person.address}, #{person.address}, #{person.position}, #{person.salary}, #{person.slack_account}, #{person.github_account}"
     end
   end
 
@@ -105,6 +105,8 @@ class RunDatabase
       puts person.salary
       puts person.slack_account
     end
+    search_result = @people.select {|person| person.name != name}
+    puts "NOT FOUND"
   end
 
   # Deleting behavior
@@ -112,11 +114,8 @@ class RunDatabase
     puts "What name would you like to delete? "
     name = gets.chomp
 
-    person = Person.new
-    delete_result = @people.select {|person| person.name == name}
-    @people.each do |peson|
-      person.delete
-    end
+    search_result = @people.select {|person| person.name == name}
+    @people.delete
   end
 
   # Running the app
@@ -128,28 +127,20 @@ class RunDatabase
         # When user wants to Add
         when "A"
           person = Person.new
-
           print "First Name: "
           person.name = gets.chomp
-
           print "Phone Number: "
           person.phone_number = gets.chomp
-
           print "Address: "
           person.address = gets.chomp
-
           print "Position (e.g. Instructor, Student, TA, Campus Director): "
           person.position = gets.chomp
-
           print "Salary: "
           person.salary = gets.chomp.to_i
-
           print "Slack Account: "
           person.slack_account = gets.chomp
-
           print "Github Account: "
           person.github_account = gets.chomp
-
           @people << person
           save_inventory
 
@@ -160,20 +151,7 @@ class RunDatabase
         when "D"
           delete
           save_inventory
-          # delete_name = gets.chomp
-          # index = 0
-          # loop do
-          #   if index >= @people.length
-          #     banner "Never found #{delete_name}"
-          #     break
-          #   end
-          #   person = @people[index]
-          #   if delete_name == person.name
-          #     @people.delete(person)
-          #     break
-          #   end
-          #   index += 1
-          # end
+
         when "R"
           print_invetory
         # When entry is not valid
