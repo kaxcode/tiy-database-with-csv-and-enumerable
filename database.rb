@@ -106,28 +106,36 @@ class RunDatabase
     puts "What name would you like to delete? "
     name = gets.chomp
     search_result = @people.any? {|person| person.name == name}
-    if search_result == true
-      @people.delete_if {|person| person.name == name}
-    end
-    if search_result == false
-      banner"#{name} was not found!"
-    end
-    p search_result
+    return unless search_result == false
+    @people.delete_if {|person| person.name == name}
   end
 
   # Reject duplicate behavior
-  def skip
-    search_text = gets.chomp
-    search_result = @people.any? {|person| person.name == search_text}
-    if search_result == true
-      banner "#{search_text} is already in our amazing database"
-    else
-      person = Person.new
-      person.name == search_text
+  def duplicate_search
+    person = Person.new
+    print "First name: "
+    new_name = gets.chomp
+    search_result = @people.any? {|person| person.name == new_name}
+    p search_result
+    if search_result == false
+      person.name = new_name
+      print "Phone Number: "
+      person.phone_number = gets.chomp
+      print "Address: "
+      person.address = gets.chomp
+      print "Position (e.g. Instructor, Student, TA, Campus Director): "
+      person.position = gets.chomp
+      print "Salary: "
+      person.salary = gets.chomp.to_i
+      print "Slack Account: "
+      person.slack_account = gets.chomp
+      print "Github Account: "
+      person.github_account = gets.chomp
+      @people << person
+      save_inventory
     end
-    # if search_result == false
-    #   search_text = person.name
-    # end
+    return unless search_result == true
+    banner "#{new_name} is alredy in database"
   end
 
   # Running the app
@@ -138,32 +146,12 @@ class RunDatabase
 
         # When user wants to Add
         when "A"
-          person = Person.new
-          print "First Name: "
-          skip
-          print "Phone Number: "
-          person.phone_number = gets.chomp
-          print "Address: "
-          person.address = gets.chomp
-          print "Position (e.g. Instructor, Student, TA, Campus Director): "
-          person.position = gets.chomp
-          print "Salary: "
-          person.salary = gets.chomp.to_i
-          print "Slack Account: "
-          person.slack_account = gets.chomp
-          print "Github Account: "
-          person.github_account = gets.chomp
-          @people << person
-          save_inventory
-
-          # Looping to search for the indexes withing the @people array and comparing it with the users input. Printing out object and its methods
+          duplicate_search
         when "S"
           search
-
         when "D"
           delete
           save_inventory
-
         when "R"
           print_invetory
         # When entry is not valid
