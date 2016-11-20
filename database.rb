@@ -96,19 +96,8 @@ class RunDatabase
     search_text = gets.chomp
 
     search_result = @people.find_all { |person| person.name.include?(search_text) || person.slack_account.include?(search_text) || person.github_account.include?(search_text) }
-
-    if search_result.empty?
-      banner "#{name} NOT FOUND!"
-    end
-
     search_result.each do |person|
-      puts person.name
-      puts person.address
-      puts person.phone_number
-      puts person.position
-      puts person.github_account
-      puts person.salary
-      puts person.slack_account
+      banner_three "#{person.name} | #{person.phone_number} | #{person.address} | #{person.address} | #{person.position} | #{person.salary} | #{person.slack_account} | #{person.github_account}"
     end
   end
 
@@ -116,8 +105,29 @@ class RunDatabase
   def delete
     puts "What name would you like to delete? "
     name = gets.chomp
-    search_result = @people.delete_if {|person| person.name.eql?(name)}
-    banner "#{name} has been DELETED."
+    search_result = @people.any? {|person| person.name == name}
+    if search_result == true
+      @people.delete_if {|person| person.name == name}
+    end
+    if search_result == false
+      banner"#{name} was not found!"
+    end
+    p search_result
+  end
+
+  # Reject duplicate behavior
+  def skip
+    search_text = gets.chomp
+    search_result = @people.any? {|person| person.name == search_text}
+    if search_result == true
+      banner "#{search_text} is already in our amazing database"
+    else
+      person = Person.new
+      person.name == search_text
+    end
+    # if search_result == false
+    #   search_text = person.name
+    # end
   end
 
   # Running the app
@@ -130,7 +140,7 @@ class RunDatabase
         when "A"
           person = Person.new
           print "First Name: "
-          person.name = gets.chomp
+          skip
           print "Phone Number: "
           person.phone_number = gets.chomp
           print "Address: "
