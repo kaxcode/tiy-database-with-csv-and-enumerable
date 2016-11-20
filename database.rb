@@ -106,8 +106,15 @@ class RunDatabase
     puts "What name would you like to delete? "
     name = gets.chomp
     search_result = @people.any? {|person| person.name == name}
-    return unless search_result == false
-    @people.delete_if {|person| person.name == name}
+    p search_result
+    if search_result == true
+      @people.delete_if {|person| person.name == name}
+      banner_two "#{name} has been deleted"
+    end
+    # I could not work around the guard clause
+    if search_result == false
+      banner "#{name} not found"
+    end
   end
 
   # Reject duplicate behavior
