@@ -116,12 +116,13 @@ class RunDatabase
   end
 
   # Reject duplicate behavior
-  def duplicate_search
+  def search_and_add
     person = Person.new
     print "First name: "
     new_name = gets.chomp
-    search_result = @people.any? {|person| person.name == new_name}
-    if search_result == false
+    if @people.any? {|person| person.name == new_name}
+      banner "#{new_name} is alredy in database"
+    else
       person.name = new_name
       print "Phone Number: "
       person.phone_number = gets.chomp
@@ -138,8 +139,6 @@ class RunDatabase
       @people << person
       save_inventory
     end
-    return unless search_result == true
-    banner "#{new_name} is alredy in database"
   end
 
   # Running the app
@@ -150,7 +149,7 @@ class RunDatabase
 
         # When user wants to Add
         when "A"
-          duplicate_search
+          search_and_add
         when "S"
           search
         when "D"
