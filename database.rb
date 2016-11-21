@@ -94,7 +94,7 @@ class RunDatabase
   def search
     puts "What name, github, or slack are you searching for? "
     search_text = gets.chomp
-    search_result = @people.find_all { |person| person.name.include?(search_text) || person.slack_account.include?(search_text) || person.github_account.include?(search_text) }
+    search_result = @people.find_all { |person| person.name.include?(search_text) || person.slack_account == search_text || person.github_account == search_text }
     if search_result.empty?
       banner "#{search_text} NOT FOUND!"
     end
