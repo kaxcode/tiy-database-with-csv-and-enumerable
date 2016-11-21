@@ -108,7 +108,6 @@ class RunDatabase
     puts "What name would you like to delete? "
     name = gets.chomp
     search_result = @people.any? {|person| person.name == name}
-    p search_result
     if search_result == true
       @people.delete_if {|person| person.name == name}
       banner_two "#{name} has been deleted"
@@ -125,7 +124,6 @@ class RunDatabase
     print "First name: "
     new_name = gets.chomp
     search_result = @people.any? {|person| person.name == new_name}
-    p search_result
     if search_result == false
       person.name = new_name
       print "Phone Number: "
