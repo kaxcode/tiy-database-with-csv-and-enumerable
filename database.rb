@@ -1,6 +1,6 @@
 require 'csv'
 
-class RunDatabase
+class Database
   def initialize
     @people = []
 
@@ -18,7 +18,7 @@ class RunDatabase
   end
 
   # Saving updates to CSV file
-  def save_inventory
+  def save_employees
     csv = CSV.open("employees.csv", "w")
     csv.add_row %w{name phone address position salary slack github}
     @people.each do |person|
